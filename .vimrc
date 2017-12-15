@@ -28,6 +28,9 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'flazz/vim-colorschemes'
 
+" 単語や選択箇所を特定の文字で囲める
+NeoBundle 'surround.vim'
+
 " go
 
 NeoBundle 'majutsushi/tagbar'
@@ -106,16 +109,21 @@ au BufNewFile,BufRead *.go set sw=4 noexpandtab ts=4 completeopt=menu,preview
 au FileType go compiler go
 " }}}
 
+
+" VimFilerをデフォルトのファイラにする
+let g:vimfiler_as_default_explorer=1
+
+
 " VimFilerTree {{{
-command! VimFilerTree call VimFilerTree(<f-args>)
-function VimFilerTree(...)
-    let l:h = expand(a:0 > 0 ? a:1 : '%:p:h')
-    let l:path = isdirectory(l:h) ? l:h : ''
-    exec ':VimFiler -buffer-name=explorer -split -simple -winwidth=45 -toggle -no-quit ' . l:path
-    wincmd t
-    setl winfixwidth
-endfunction
-autocmd! FileType vimfiler call g:my_vimfiler_settings()
+" xcommand! VimFilerTree call VimFilerTree(<f-args>)
+" xfunction VimFilerTree(...)
+" x    let l:h = expand(a:0 > 0 ? a:1 : '%:p:h')
+" x    let l:path = isdirectory(l:h) ? l:h : ''
+" x    exec ':VimFiler -buffer-name=explorer -split -simple -winwidth=45 -toggle -no-quit ' . l:path
+" x    wincmd t
+" x    setl winfixwidth
+" xendfunction
+" xautocmd! FileType vimfiler call g:my_vimfiler_settings()
 
 " VimFilerのための関数なんかエラーがでるので要調査
 " function! g:my_vimfiler_settings()
@@ -378,4 +386,9 @@ endif
 
 nmap <Esc><Esc> :nohlsearch<CR><Esc>
 
+" ヤンクをクリップボードにコピー
+set clipboard=unnamed,autoselect
 
+" escが遠いので代用する。
+noremap <C-j> <esc>
+noremap! <C-j> <esc>
