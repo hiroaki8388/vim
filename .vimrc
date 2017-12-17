@@ -72,9 +72,30 @@ NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
 
 " Git管理
-NeoBundle 'tpope/vim-fugitive'
+  NeoBundle 'tpope/vim-fugitive'
 
 "JavaScrppt 
+
+NeoBundle 'osyo-manga/shabadou.vim'
+
+NeoBundle 'osyo-manga/vim-watchdogs'
+
+
+"  " "  " ファイルタイプと実行するコマンドのひも付け（javascriptでeslint実行するよー）
+"  if executable('eslint')
+"    let g:quickrun_config['javascript/watchdogs_checker'] = {
+"          \   'type' : 'watchdogs_checker/eslint',
+"          \ }
+"    let g:quickrun_config['javascript.jsx/watchdogs_checker'] = {
+"          \   'type' : 'eslint',
+"          \ }
+"  endif
+"  " 次のファイルタイプのバッファが保存されたらwatch-dogsがquick-run走らせてくれる
+"  let g:watchdogs_check_BufWritePost_enables = {
+"        \ 'javascript'     : 1,
+"        \ 'javascript.jsx' : 1,
+"        \ }
+
 
 " HTMLを修正したタイミングで、ブラウザが自動で再読込
 NeoBundle 'tell-k/vim-browsereload-mac'
