@@ -31,7 +31,11 @@ NeoBundle 'flazz/vim-colorschemes'
 " 単語や選択箇所を特定の文字で囲める
 NeoBundle 'surround.vim'
 
-" go
+" 括弧をとじてくれる
+NeoBundle 'Townk/vim-autoclose'
+
+" 全角半角
+" NeoBundleFetch  'bouzuya/vim-ibus'
 
 NeoBundle 'majutsushi/tagbar'
 NeoBundle 'Shougo/vimfiler'
@@ -67,21 +71,51 @@ NeoBundle 'plasticboy/vim-markdown'
 NeoBundle 'kannokanno/previm'
 NeoBundle 'tyru/open-browser.vim'
 
+" Git管理
+NeoBundle 'tpope/vim-fugitive'
+
 "JavaScrppt 
+
+" HTMLを修正したタイミングで、ブラウザが自動で再読込
+NeoBundle 'tell-k/vim-browsereload-mac'
+
+" vimから特定のURLブラウザを開く
+NeoBundle 'tyru/open-browser.vim'
+" gfで定義に飛べる
 NeoBundle 'moll/vim-node'
+" インデントとシンタックスカラー
+NeoBundle 'pangloss/vim-javascript'
+" 自動import
+NeoBundle 'Galooshi/vim-import-js'
+
+" jsとnodeの補完
 NeoBundle 'mattn/jscomplete-vim'
 NeoBundle 'myhere/vim-nodejs-complete'
  
 autocmd FileType javascript :setl omnifunc=jscomplete#CompleteJS
  
 NeoBundleLazy 'jelera/vim-javascript-syntax', {'autoload':{'filetypes':['javascript']}}
- 
+
+" save時に構文チェック
 NeoBundle 'scrooloose/syntastic'
-let g:syntastic_enable_signs=1
-let g:syntastic_auto_loc_list=2
- 
-let g:syntastic_javascript_checker = "jshint"
- 
+let g:syntastic_check_on_open=0 "ファイルを開いたときはチェックしない
+let g:syntastic_check_on_save=1 "保存時にはチェック
+let g:syntastic_check_on_wq = 0 " wqではチェックしない
+let g:syntastic_auto_loc_list=1 "エラーがあったら自動でロケーションリストを開く
+let g:syntastic_loc_list_height=6 "エラー表示ウィンドウの高さ
+set statusline+=%#warningmsg# "エラーメッセージの書式
+set statusline+=%{SyntasticStatuslineFlag()}
+set statusline+=%*
+let g:syntastic_javascript_checkers = ['eslint'] "ESLintを使う
+let g:syntastic_mode_map = {
+      \ 'mode': 'active',
+      \ 'active_filetypes': ['javascript'],
+      \ 'passive_filetypes': []
+      \ }
+NeoBundle 'thinca/vim-quickrun'
+" 水平に分割する
+let g:quickrun_config={'*': {'split': ''}}
+
 " ドキュメントジェネレータ
 NeoBundle 'heavenshell/vim-jsdoc'
  
@@ -393,12 +427,12 @@ set clipboard=unnamed,autoselect
 noremap <C-j> <esc>
 noremap! <C-j> <esc>
 
-"ノーマルモードの<C-^>を無効化
-nnoremap <silent> <C-j> <Nop>
 
-"IME状態に応じたカーソル色を設定
-if has('multi_byte_ime')
-  highlight Cursor guifg=#000d18 guibg=#8faf9f gui=bold
-  highlight CursorIM guifg=NONE guibg=#ecbcbc
-endif
-
+" escで自動的に半角になる
+" 
+" :inoremap <silent> <Esc> <Esc>:<C-u>call ibus#disable()<CR>
+" :inoremap <silent> <C-j> <C-\><C-o>:<C-u>call ibus#toggle()<CR>
+" :set statusline=[%{ibus#is_enabled()?'あ':'aA'}] 
+"
+"
+set runtimepath+=~/vim/im_control.vim
