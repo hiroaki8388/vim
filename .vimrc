@@ -392,3 +392,13 @@ set clipboard=unnamed,autoselect
 " escが遠いので代用する。
 noremap <C-j> <esc>
 noremap! <C-j> <esc>
+
+"ノーマルモードの<C-^>を無効化
+nnoremap <silent> <C-j> <Nop>
+
+"IME状態に応じたカーソル色を設定
+if has('multi_byte_ime')
+  highlight Cursor guifg=#000d18 guibg=#8faf9f gui=bold
+  highlight CursorIM guifg=NONE guibg=#ecbcbc
+endif
+

@@ -1,0 +1,3 @@
+echoスタaaあああaaaaaaaa
+:q
+あート
