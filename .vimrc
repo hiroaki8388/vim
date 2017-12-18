@@ -28,6 +28,7 @@ NeoBundle 'tpope/vim-fugitive'
 NeoBundle 'ctrlpvim/ctrlp.vim'
 NeoBundle 'flazz/vim-colorschemes'
 
+
 " 単語や選択箇所を特定の文字で囲める
 NeoBundle 'surround.vim'
 
@@ -68,7 +69,11 @@ NeoBundle 'Shougo/vimshell', { 'rev' : '3787e5' }
 
 " MarkDown
 NeoBundle 'plasticboy/vim-markdown'
-NeoBundle 'kannokanno/previm'
+" NeoBundle 'kannokanno/previm'
+" NeoBundle 'kannokanno/previm'
+" uml対応ブランチ
+NeoBundle 'kazuph/previm', 'feature/add-plantuml-plugin'
+NeoBundle 'tyru/open-browser.vim'
 NeoBundle 'tyru/open-browser.vim'
 
 " Git管理
@@ -155,6 +160,7 @@ NeoBundleCheck
 
 
 "End NeoBundle Scripts-------------------------
+
 
 " for golang {{{
 set path+=$GOPATH/src/**
@@ -335,6 +341,7 @@ let g:indent_guides_enable_on_vim_startup = 1
 " markdown
 au BufRead,BufNewFile *.md set filetype=markdown
 let g:previm_open_cmd = 'open -a "Google Chrome"'
+nnoremap <silent><Space><Space>p :PrevimOpen<CR>
 
 " vim-go  
 "" mapping  
