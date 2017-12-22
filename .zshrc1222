@@ -1,0 +1,251 @@
+# If you come from bash you might have to change your $PATH.
+# export PATH=$HOME/bin:/usr/local/bin:$PATH
+
+# Path to your oh-my-zsh installation.
+export ZSH=/Users/hiroaki/.oh-my-zsh
+
+# Set name of the theme to load. Optionally, if you set this to "random"
+# it'll load a random theme each time that oh-my-zsh is loaded.
+# See https://github.com/robbyrussell/oh-my-zsh/wiki/Themes
+ZSH_THEME="robbyrussell"
+
+# Uncomment the following line to use case-sensitive completion.
+# CASE_SENSITIVE="true"
+
+# Uncomment the following line to use hyphen-insensitive completion. Case
+# sensitive completion must be off. _ and - will be interchangeable.
+# HYPHEN_INSENSITIVE="true"
+
+# Uncomment the following line to disable bi-weekly auto-update checks.
+# DISABLE_AUTO_UPDATE="true"
+
+# Uncomment the following line to change how often to auto-update (in days).
+# export UPDATE_ZSH_DAYS=13
+
+# Uncomment the following line to disable colors in ls.
+# DISABLE_LS_COLORS="true"
+
+# Uncomment the following line to disable auto-setting terminal title.
+# DISABLE_AUTO_TITLE="true"
+
+# Uncomment the following line to enable command auto-correction.
+# ENABLE_CORRECTION="true"
+
+# Uncomment the following line to display red dots whilst waiting for completion.
+# COMPLETION_WAITING_DOTS="true"
+
+# Uncomment the following line if you want to disable marking untracked files
+# under VCS as dirty. This makes repository status check for large repositories
+# much, much faster.
+# DISABLE_UNTRACKED_FILES_DIRTY="true"
+
+# Uncomment the following line if you want to change the command execution time
+# stamp shown in the history command output.
+# The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
+# HIST_STAMPS="mm/dd/yyyy"
+
+# Would you like to use another custom folder than $ZSH/custom?
+# ZSH_CUSTOM=/path/to/new-custom-folder
+
+# Which plugins would you like to load? (plugins can be found in ~/.oh-my-zsh/plugins/*)
+# Custom plugins may be added to ~/.oh-my-zsh/custom/plugins/
+# Example format: plugins=(rails git textmate ruby lighthouse)
+# Add wisely, as too many plugins slow down shell startup.
+plugins=(git)
+
+source $ZSH/oh-my-zsh.sh
+
+# User configuration
+
+# export MANPATH="/usr/local/man:$MANPATH"
+
+# You may need to manually set your language environment
+# export LANG=en_US.UTF-8
+
+# Preferred editor for local and remote sessions
+# if [[ -n $SSH_CONNECTION ]]; then
+#   export EDITOR='vim'
+# else
+#   export EDITOR='mvim'
+# fi
+
+# Compilation flags
+# export ARCHFLAGS="-arch x86_64"
+
+# ssh
+# export SSH_KEY_PATH="~/.ssh/rsa_id"
+
+# Set personal aliases, overriding those provided by oh-my-zsh libs,
+# plugins, and themes. Aliases can be placed here, though oh-my-zsh
+# users are encouraged to define aliases within the ZSH_CUSTOM folder.
+# For a full list of active aliases, run `alias`.
+#
+# Example aliases
+# alias zshconfig="mate ~/.zshrc"
+# alias ohmyzsh="mate ~/.oh-my-zsh"
+
+# 設定をvimに変更
+# bindkey -v
+
+# peco
+
+## 履歴検索
+function peco-select-history() {
+    BUFFER=$(fc -l -r -n 1 | peco --query "$LBUFFER")
+    CURSOR=$#BUFFER
+    zle redisplay
+}
+zle -N peco-select-history
+bindkey '^r' peco-select-history
+
+## ファイル検索
+function peco-path() {
+  local filepath="$(find . | grep -v '/\.' | peco --prompt 'path>')"
+  [ -z "$filepath" ] && return
+  if [ -n "$lbuffer" ]; then
+    buffer="$lbuffer$filepath"
+  else
+    if [ -d "$filepath" ]; then
+      buffer="cd $filepath"
+    elif [ -f "$filepath" ]; then
+      buffer="$editor $filepath"
+    fi
+  fi
+  cursor=$#buffer
+}
+
+# zle -n peco-path
+# bindkey '^z' peco-path
+# 
+# # プロセスkill
+# function peco-kill-process () {
+#     ps -ef | peco | awk '{ print $2 }' | xargs kill
+#     zle clear-screen
+# }
+# zle -n peco-kill-process
+# bindkey '^k' peco-kill-process
+# 
+# ## screenのデタッチ済セッション一覧からアタッチ先を選択,アタッチ
+# function pscreen() {
+#   screen -ls | grep -i "detached" > /dev/null 2>&1
+#   if [ $? -eq 0  ]; then
+#     screen -ls \
+#       | anyframe-selector-auto \
+#       | cut -d '.' -f01 | sed -e 's/^\t//g' \
+#       | anyframe-action-execute screen -r
+#   else
+#     echo "no detached sockets found"
+#     return
+#   fi
+# }
+# 
+# ## 一度移動したことがあるディレクトリに移動
+# if [[ -n $(echo ${^fpath}/chpwd_recent_dirs(n)) && -n $(echo ${^fpath}/cdr(n)) ]]; then
+# autoload -uz chpwd_recent_dirs cdr add-zsh-hook
+#   add-zsh-hook chpwd chpwd_recent_dirs
+#   zstyle ':completion:*:*:cdr:*:*' menu selection
+#   zstyle ':completion:*' recent-dirs-insert both
+#   zstyle ':chpwd:*' recent-dirs-max 500
+#   zstyle ':chpwd:*' recent-dirs-default true
+#   zstyle ':chpwd:*' recent-dirs-file "${xdg_cache_home:-$home/.cache}/shell/chpwd-recent-dirs"
+#   zstyle ':chpwd:*' recent-dirs-pushd true
+# fi
+# 
+# 
+# 
+# if (( ${+commands[peco]} )); then
+#   peco-go-to-dir () {
+#     local line
+#     local selected="$(
+#       {
+#         (
+#           autoload -uz chpwd_recent_filehandler
+#           chpwd_recent_filehandler && for line in $reply; do
+#             if [[ -d "$line" ]]; then
+#               echo "$line"
+#             fi
+#           done
+#         )
+#         ghq list --full-path
+#         for line in *(-/) ${^cdpath}/*(n-/); do echo "$line"; done | sort -u
+#       } | peco --query "$lbuffer"
+#     )"
+#     if [ -n "$selected" ]; then
+#       buffer="cd ${(q)selected}"
+#       zle accept-line
+#     fi
+#     zle clear-screen
+#   }
+#   zle -n peco-go-to-dir
+#   bindkey '^[' peco-go-to-dir
+# fi
+# 
+# ## cheatsheetをフィルタリング
+# function csp () {
+#   unset cheatcolors
+#   buffer=$( cheat $1 | grep -v '^#' | peco --query "$lbuffer" )
+#   print -z "$buffer"
+#   export cheatcolors=true
+# }
+# 
+# ## ailisを検索
+# function aliasp () {
+#   buffer=$(alias | peco --query "$lbuffer" | awk -f"=" '{print $1}')
+#   print -z "$buffer"
+# }
+# 
+# ## git
+# ### 最近更新したブランチにチェックアウト
+# function peco-git-recent-branches () {
+#     local selected_branch=$(git for-each-ref --format='%(refname)' --sort=-committerdate refs/heads | \
+#         perl -pne 's{^refs/heads/}{}' | \
+#         peco)
+#     if [ -n "$selected_branch" ]; then
+#         buffer="git checkout ${selected_branch}"
+#         zle accept-line
+#     fi
+#     zle clear-screen
+# }
+# zle -n peco-git-recent-branches
+# 
+# bindkey "^g^b" peco-git-recent-branches
+# 
+# ### レビューを検索してコミットを検索
+# function peco-git-hash () {
+#   local current_buffer=$buffer
+#   local git_hash="$(git log --oneline --branches | peco | awk '{print $1}')"
+#   buffer="${current_buffer}${git_hash}"
+#   # カーソル位置を末尾に移動
+#   cursor=$#buffer
+# }
+# zle -n peco-git-hash
+# bindkey '^g^h' peco-git-hash
+# 
+# 
+ export PYENV_ROOT="$HOME/.pyenv"
+ export PATH="$PYENV_ROOT/bin:$PATH"
+ eval "$(pyenv init -)"
+ export PATH="$PYENV_ROOT/versions/anaconda3-4.3.1/bin/:$PATH"
+ 
+# goの設定
+export goroot=/usr/local/opt/go/libexec
+export gopath=$HOME/.go
+# export path=$GOPATH/bin:$GOROOT/bin:$PATH
+
+# # # power-shell pipで入れる
+#   function powerline_precmd() {
+#       PS1="$(~/.local/bin/powerline-shell --shell zsh $?)"
+#   }
+#   
+#   function install_powerline_precmd() {
+#     for s in "${precmd_functions[@]}"; do
+#       if [ "$s" = "powerline_precmd" ]; then
+#         return
+#       fi
+#     done
+#     precmd_functions+=(powerline_precmd)
+#   }
+#   
+#   if [ "$TERM" != "linux" ]; then
+#       install_powerline_precmd
+#     fi
